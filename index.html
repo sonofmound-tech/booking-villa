@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Putra Jaya</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background: #090d16;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Background Aesthetic Banner */
+    .bg-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 380px;
+      background: linear-gradient(to bottom, rgba(9, 13, 22, 0.4), #090d16), 
+                  url('https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?q=80&w=1400&auto=format&fit=crop') center center/cover no-repeat;
+      z-index: -1;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 580px;
+      margin: 60px auto 40px auto;
+      padding: 0 20px;
+    }
+
+    .header-brand {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header-brand .tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #facc15;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .header-brand h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .header-brand h1 span {
+      color: #facc15;
+    }
+
+    /* Form Card */
+    .booking-card {
+      background: rgba(22, 30, 49, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 35px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .price-badge {
+      background: rgba(250, 204, 21, 0.1);
+      border: 1px solid rgba(250, 204, 21, 0.2);
+      color: #facc15;
+      padding: 12px;
+      border-radius: 14px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      background: #0f172a;
+      font-size: 14px;
+      color: #ffffff;
+      font-weight: 500;
+      transition: all 0.3s;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #facc15;
+      box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.15);
+    }
+
+    /* Info Field ReadOnly */
+    .info-field {
+      background: rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .info-badge-status {
+      font-size: 12px;
+      font-weight: 600;
+      color: #34d399;
+      background: rgba(52, 211, 153, 0.1);
+      padding: 6px 12px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-top: 6px;
+    }
+
+    /* Summary Panel */
+    .summary-panel {
+      margin-top: 25px;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 18px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      color: #94a3b8;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    .summary-total span {
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .summary-total .price-total {
+      font-size: 28px;
+      font-weight: 800;
+      color: #facc15;
+    }
+
+    /* Button */
+    .btn-submit {
+      width: 100%;
+      margin-top: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px;
+      background: #22c55e;
+      color: white;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 16px;
+      transition: 0.3s;
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+    }
+
+    .btn-submit:hover {
+      background: #16a34a;
+      transform: translateY(-2px);
+    }
+    
+    .btn-submit.disabled {
+      background: #334155;
+      color: #64748b;
+      cursor: not-allowed;
+      pointer-events: none;
+      box-shadow: none;
+    }
+
+    .footer {
+      padding: 25px;
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+      border-top: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media(max-width: 500px) {
+      .input-grid {
+        grid-template-columns: 1fr;
+      }
+      .full-width {
+        grid-column: span 1;
+      }
+      .booking-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-banner"></div>
+
+<div class="main-container">
+  <header class="header-brand">
+    <div class="tag">Putra Jaya Hotel & Villa</div>
+    <h1>Booking <span>Otomatis</span></h1>
+  </header>
+
+  <div class="booking-card">
+    <div class="price-badge" id="displayMulai">
+      Kamar: Rp18.000 / Jam
+    </div>
+
+    <div class="input-grid">
+      
+      <div class="input-group full-width">
+        <label>Nama Pemesan</label>
+        <input type="text" id="nama" placeholder="Tulis nama lengkap Anda">
+      </div>
+
+      <div class="input-group full-width">
+        <label>Tanggal Booking</label>
+        <input type="date" id="tanggal">
+      </div>
+
+      <div class="input-group full-width">
+        <label>Tipe Akomodasi</label>
+        <select id="tipeAkomodasi">
+          <option value="kamar">🛏️ Sewa Kamar (Per Jam)</option>
+          <option value="villa">🏡 Sewa Villa (Paket Jam)</option>
+        </select>
+      </div>
+
+      <div id="formKamar" class="full-width input-grid">
+        <div class="input-group">
+          <label>Nomor Kamar</label>
+          <select id="kamar">
+            <option value="Kamar 1">Kamar 1</option>
+            <option value="Kamar 2">Kamar 2</option>
+            <option value="Kamar 3">Kamar 3</option>
+            <option value="Kamar 4">Kamar 4</option>
+            <option value="Kamar 5">Kamar 5</option>
+          </select>
+          <div id="statusKamar" class="info-badge-status">Kamar ke: 1</div>
+        </div>
+
+        <div class="input-group">
+          <label>Hari Terdeteksi</label>
+          <input type="text" id="hariInfo" class="info-field" value="Hari Biasa" readonly>
+        </div>
+      </div>
+
+      <div id="formVilla" class="full-width hidden">
+        <div class="input-group">
+          <label>Pilihan Paket Villa</label>
+          <select id="paketVilla">
+            <option value="150000" data-tipe="Villa 2 Kamar" data-durasi="5" data-maks="4">Villa 2 Kamar - Rp150.000 / 5 Jam</option>
+            <option value="200000" data-tipe="Villa 3 Kamar" data-durasi="6" data-maks="6">Villa 3 Kamar - Rp200.000 / 6 Jam</option>
+          </select>
+          <div id="infoVilla" class="info-badge-status" style="color:#facc15; background:rgba(250,204,21,0.1);">Kapasitas Maks: 4 Orang | Paket: 5 Jam</div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Jam Check-In</label>
+        <input type="time" id="masuk">
+      </div>
+
+      <div class="input-group">
+        <label id="labelKeluar">Jam Check-Out</label>
+        <input type="time" id="keluar">
+      </div>
+
+      <div class="input-group full-width">
+        <label>Metode Pembayaran</label>
+        <select id="statusBayar">
+          <option value="Cash">💵 Cash / Tunai</option>
+          <option value="Transfer">🏦 Transfer Bank</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="summary-panel">
+      <div class="summary-row">
+        <span>Durasi Sewa</span>
+        <span id="durasiText" style="color: #ffffff; font-weight: 600;">0 Jam</span>
+      </div>
+      <div class="summary-row">
+        <span>Ket. Tarif</span>
+        <span id="hargaKeterangan" style="color: #ffffff; font-weight: 600;">Rp18.000 / jam</span>
+      </div>
+      <div class="summary-total">
+        <span>Total Pembayaran</span>
+        <div class="price-total" id="total">Rp0</div>
+      </div>
+    </div>
+
+    <a href="#" class="btn-submit disabled" id="waBtn" target="_blank">
+      🚀 Booking Sekarang via WhatsApp
+    </a>
+  </div>
+</div>
+
+<footer class="footer">
+  &copy; 2026 Booking Villa & Hotel Putra Jaya. All Rights Reserved.
+</footer>
+
+<script>
+  const nama = document.getElementById('nama');
+  const tanggal = document.getElementById('tanggal');
+  const tipeAkomodasi = document.getElementById('tipeAkomodasi');
+  const statusBayar = document.getElementById('statusBayar');
+  const masuk = document.getElementById('masuk');
+  const keluar = document.getElementById('keluar');
+  const labelKeluar = document.getElementById('labelKeluar');
+  const displayMulai = document.getElementById('displayMulai');
+  
+  const formKamar = document.getElementById('formKamar');
+  const hariInfo = document.getElementById('hariInfo');
+  const kamar = document.getElementById('kamar');
+  const statusKamar = document.getElementById('statusKamar');
+  
+  const formVilla = document.getElementById('formVilla');
+  const paketVilla = document.getElementById('paketVilla');
+  const infoVilla = document.getElementById('infoVilla');
+
+  const total = document.getElementById('total');
+  const durasiText = document.getElementById('durasiText');
+  const hargaKeterangan = document.getElementById('hargaKeterangan');
+  const waBtn = document.getElementById('waBtn');
+
+  let hargaKamarSewa = 18000; 
+  let labelHariSewa = "Hari Biasa";
+
+  // Memasang batas minimum pemilihan kalender hari ini
+  const hariIni = new Date().toISOString().split("T")[0];
+  tanggal.min = hariIni;
+
+  // Toggle Mode Kamar / Villa
+  tipeAkomodasi.addEventListener('change', function() {
+    if (this.value === 'kamar') {
+      formKamar.classList.remove('hidden');
+      formVilla.classList.add('hidden');
+      labelKeluar.innerHTML = "Jam Check-Out";
+      keluar.removeAttribute('readonly');
+      keluar.classList.remove('info-field');
+    } else {
+      formKamar.classList.add('hidden');
+      formVilla.classList.remove('hidden');
+      labelKeluar.innerHTML = "Check-Out (Sesuai Paket)";
+      keluar.setAttribute('readonly', true); 
+      keluar.classList.add('info-field');
+    }
+    hitung();
+  });
+
+  // Logika Deteksi Hari Weekend otomatis saat input Kalender diisi
+  tanggal.addEventListener('change', function() {
+    if (this.value) {
+      const day = new Date(this.value).getDay();
+      if (day === 0 || day === 6) { 
+        hargaKamarSewa = 25000;
+        labelHariSewa = "Weekend";
+        hariInfo.value = "Weekend (Rp25.000/jam)";
+      } else {
+        hargaKamarSewa = 18000;
+        labelHariSewa = "Hari Biasa";
+        hariInfo.value = "Hari Biasa (Rp18.000/jam)";
+      }
+    } else {
+      hariInfo.value = "Hari Biasa";
+      hargaKamarSewa = 18000;
+      labelHariSewa = "Hari Biasa";
+    }
+    hitung();
+  });
+
+  // Auto-hitung jam keluar otomatis berdasarkan durasi paket villa
+  masuk.addEventListener('input', function() {
+    if (tipeAkomodasi.value === 'villa' && this.value) {
+      const selectedOption = paketVilla.options[paketVilla.selectedIndex];
+      const paketDurasiJam = parseInt(selectedOption.getAttribute('data-durasi'));
+      
+      const [jam, menit] = this.value.split(':').map(Number);
+      let targetJam = jam + paketDurasiJam;
+      
+      if (targetJam >= 24) targetJam -= 24;
+      
+      const jamStr = String(targetJam).padStart(2, '0');
+      const menitStr = String(menit).padStart(2, '0');
+      keluar.value = `${jamStr}:${menitStr}`;
+    }
+    hitung();
+  });
+
+  paketVilla.addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const maks = selectedOption.getAttribute('data-maks');
+    const jamPaket = selectedOption.getAttribute('data-durasi');
+    infoVilla.innerHTML = `Kapasitas Maks: ${maks} Orang | Paket: ${jamPaket} Jam`;
+    
+    if (masuk.value) {
+      masuk.dispatchEvent(new Event('input'));
+    } else {
+      hitung();
+    }
+  });
+
+  function hitung(){
+    const tglValue = tanggal.value;
+    const namaValue = nama.value;
+    const tipe = tipeAkomodasi.value;
+
+    let tglFormatted = tglValue;
+    if (tglValue) {
+      tglFormatted = new Date(tglValue).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    if (tipe === 'kamar') {
+      displayMulai.innerHTML = `📋 Kamar: Rp${hargaKamarSewa.toLocaleString('id-ID')} / Jam`;
+    } else {
+      const selectedOptionVilla = paketVilla.options[paketVilla.selectedIndex];
+      displayMulai.innerHTML = `📋 Villa: Rp${parseInt(paketVilla.value).toLocaleString('id-ID')} / ${selectedOptionVilla.getAttribute('data-durasi')} Jam`;
+    }
+
+    // Blokir Tombol kirim jika isian belum beres
+    if (!namaValue || !tglValue || !masuk.value || !keluar.value) {
+      durasiText.innerHTML = `0 Jam`;
+      total.innerHTML = `Rp0`;
+      waBtn.classList.add('disabled');
+      
+      if(tipe === 'kamar') {
+        statusKamar.innerHTML = `Kamar ke: ${kamar.value.replace('Kamar ','')}`;
+        hargaKeterangan.innerHTML = `Rp${hargaKamarSewa.toLocaleString('id-ID')} / Jam`;
+      } else {
+        hargaKeterangan.innerHTML = `Harga Paket Villa`;
+      }
+      return;
+    }
+
+    let hargaTotal = 0;
+    let detailAkomodasi = "";
+    let teksDurasi = "";
+
+    const jamMasuk = new Date(`1970-01-01T${masuk.value}:00`);
+    let jamKeluar = new Date(`1970-01-01T${keluar.value}:00`);
+
+    if (jamKeluar <= jamMasuk) {
+      jamKeluar = new Date(`1970-01-02T${keluar.value}:00`);
+    }
+    let selisihJam = Math.round(((jamKeluar - jamMasuk) / (1000 * 60 * 60)) * 100) / 100;
+
+    if (tipe === 'kamar') {
+      hargaTotal = selisihJam * hargaKamarSewa;
+      statusKamar.innerHTML = `Kamar ke: ${kamar.value.replace('Kamar ','')}`;
+      hargaKeterangan.innerHTML = `Rp${hargaKamarSewa.toLocaleString('id-ID')} / Jam`;
+      teksDurasi = `${selisihJam} Jam`;
+      detailAkomodasi = `🚪 Tipe: Kamar (${kamar.value})%0Acalendar: Kategori Hari: ${labelHariSewa}`;
+    } else {
+      const selectedOption = paketVilla.options[paketVilla.selectedIndex];
+      hargaTotal = parseInt(paketVilla.value);
+      hargaKeterangan.innerHTML = `Paket Tetap`;
+      teksDurasi = `${selectedOption.getAttribute('data-durasi')} Jam (Paket)`;
+      detailAkomodasi = `🏡 Tipe: Villa (${selectedOption.getAttribute('data-tipe')})%0A👥 Maksimal: ${selectedOption.getAttribute('data-maks')} Orang`;
+    }
+
+    durasiText.innerHTML = teksDurasi;
+    total.innerHTML = `Rp${hargaTotal.toLocaleString('id-ID')}`;
+    waBtn.classList.remove('disabled');
+
+    const pesanWA = `Halo Putra Jaya,%0A%0ASaya ingin melakukan booking sewa.%0A%0A*Data Pemesan:*%0A👤 Nama: ${encodeURIComponent(namaValue)}%0A📅 Tanggal: ${tglFormatted}%0A${detailAkomodasi}%0A🕒 Check-In: ${masuk.value}%0A🕒 Check-Out: ${keluar.value}%0A⏳ Durasi: ${teksDurasi}%0A%0A*Rincian Pembayaran:*%0A💵 Total Biaya: Rp${hargaTotal.toLocaleString('id-ID')}%0A💳 Metode: ${statusBayar.value}`;
+
+    // Update Nomor Baru: 085743181607
+    waBtn.href = `https://wa.me/6285743181607?text=${pesanWA}`;
+  }
+
+  // Bind Events
+  masuk.addEventListener('change', hitung);
+  keluar.addEventListener('change', hitung);
+  kamar.addEventListener('change', hitung);
+  statusBayar.addEventListener('change', hitung);
+  nama.addEventListener('input', hitung);
+</script>
+
+</body>
+</html>
