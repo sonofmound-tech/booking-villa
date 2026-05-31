@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Putra Jaya Speed Booking</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 16px;
+      max-width: 480px; /* Layar HP */
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin: 15px 0 25px 0;
+    }
+
+    header h1 {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    header h1 span {
+      color: #facc15;
+    }
+
+    header p {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Grid Pilihan Kamar/Villa */
+    .option-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .card-option {
+      background: #1e293b;
+      border: 2px solid transparent;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .card-option.active {
+      border-color: #facc15;
+      background: rgba(250, 204, 21, 0.05);
+    }
+
+    .card-option .left-side {
+      text-align: left;
+    }
+
+    .card-option .title {
+      font-size: 15px;
+      font-weight: 700;
+      display: block;
+    }
+
+    .card-option .price {
+      font-size: 13px;
+      color: #facc15;
+      font-weight: 700;
+    }
+
+    /* Input Grid */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #cbd5e1;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      color: white;
+      font-size: 15px;
+      font-weight: 500;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #facc15;
+    }
+
+    .flex-inputs {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 12px;
+    }
+
+    /* Durasi Urut 4-24 Jam */
+    .pill-container {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 24px;
+    }
+
+    .pill {
+      background: #1e293b;
+      padding: 12px 18px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      border: 1px solid #334155;
+      cursor: pointer;
+    }
+
+    .pill.active {
+      background: #facc15;
+      color: #0f172a;
+      border-color: #facc15;
+    }
+
+    /* Voucher Area */
+    .voucher-box {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .btn-apply {
+      background: #334155;
+      color: white;
+      border: none;
+      padding: 0 20px;
+      border-radius: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .voucher-msg {
+      font-size: 12px;
+      margin-top: 6px;
+      font-weight: 600;
+      display: none;
+    }
+
+    /* Ringkasan */
+    .sticky-summary {
+      background: #1e293b;
+      border-radius: 20px;
+      padding: 20px;
+      margin-top: 25px;
+      box-shadow: 0 -10px 25px rgba(0,0,0,0.3);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    .checkout-highlight {
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.2);
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: #f43f5e !important;
+      font-weight: 700;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed #334155;
+    }
+
+    .summary-total .total-price {
+      font-size: 24px;
+      font-weight: 800;
+      color: #facc15;
+    }
+
+    .btn-wa {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #22c55e;
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 18px;
+      border-radius: 16px;
+      margin-top: 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Putra Jaya <span>Fast Booking</span></h1>
+    <p>Sewa Kamar & Villa Praktis Lewat HP</p>
+  </header>
+
+  <div class="section-title">1. Pilih Tipe Unit</div>
+  <div class="option-grid">
+    <div class="card-option active" id="unit-kamar" onclick="pilihUnit('kamar', this)">
+      <div class="left-side">
+        <span class="title">🛏️ Kamar Biasa</span>
+      </div>
+      <span class="price" id="harga-kamar-teks">Rp18.000 / Jam</span>
+    </div>
+    <div class="card-option" id="unit-villa2" onclick="pilihUnit('villa2', this)">
+      <div class="left-side">
+        <span class="title">🏡 Villa (2 Kamar)</span>
+      </div>
+      <span class="price" id="harga-villa2-teks">Rp35.000 / Jam</span>
+    </div>
+    <div class="card-option" id="unit-villa3" onclick="pilihUnit('villa3', this)">
+      <div class="left-side">
+        <span class="title">🏰 Villa Super (3 Kamar)</span>
+      </div>
+      <span class="price" id="harga-villa3-teks">Rp40.000 / Jam</span>
+    </div>
+  </div>
+
+  <div class="section-title">2. Kapan Waktu Masuk?</div>
+  <div class="form-group flex-inputs">
+    <div>
+      <input type="date" id="tanggal">
+    </div>
+    <div>
+      <input type="time" id="jamMasuk">
+    </div>
+  </div>
+
+  <div class="section-title">3. Berapa Jam Sewa? (Min. 4 Jam)</div>
+  <div class="pill-container" id="durasiContainer"></div>
+
+  <div class="form-group">
+    <label>Kode Voucher Live TikTok (Jika Ada)</label>
+    <div class="voucher-box">
+      <input type="text" id="inputVoucher" placeholder="Masukkan kode harian..." style="text-transform: uppercase;">
+      <button type="button" class="btn-apply" onclick="klaimVoucher()">Gunakan</button>
+    </div>
+    <div id="voucherMsg" class="voucher-msg"></div>
+  </div>
+
+  <div class="form-group">
+    <label>Nama Pemesan (Opsional)</label>
+    <input type="text" id="nama" placeholder="Bisa dikosongkan">
+  </div>
+
+  <div class="sticky-summary">
+    <div class="summary-row">
+      <span>Unit Terpilih:</span>
+      <span id="textTipe" style="color:white; font-weight:700;">Kamar Biasa</span>
+    </div>
+    <div class="summary-row">
+      <span>Durasi Sewa:</span>
+      <span id="textDurasi" style="color:white; font-weight:700;">4 Jam</span>
+    </div>
+    <div class="summary-row checkout-highlight">
+      <span>🕒 Waktu Check-Out:</span>
+      <span id="textCheckOut">--:--</span>
+    </div>
+    <div class="summary-row" id="rowDiskon" style="display:none; color:#22c55e;">
+      <span>Potongan Diskon:</span>
+      <span id="textDiskon">-Rp0</span>
+    </div>
+    
+    <div class="summary-total">
+      <span style="font-weight:700;">Total Biaya</span>
+      <span class="total-price" id="textTotal">Rp0</span>
+    </div>
+
+    <a href="#" class="btn-wa" id="btnKirimWA" target="_blank">
+      ⚡ Kirim via WhatsApp Sekarang
+    </a>
+  </div>
+
+  <script>
+    // Konfigurasi Database Tarif Utama
+    const TARIF = {
+      kamar:  { weekday: 18000, weekend: 25000, nama: "Kamar Biasa" },
+      villa2: { weekday: 35000, weekend: 40000, nama: "Villa (2 Kamar)" },
+      villa3: { weekday: 40000, weekend: 45000, nama: "Villa Super (3 Kamar)" }
+    };
+
+    // Daftar Kode Voucher Live TikTok Berdasarkan Hari Masuk Pelanggan
+    // (0 = Minggu, 1 = Senin, 2 = Selasa, 3 = Rabu, 4 = Kamis, 5 = Jumat, 6 = Sabtu)
+    const VOUCHER_HARIAN = {
+      1: { kode: "TIKTOKSENIN", potongan: 15000, teks: "Live Senin Berkah! (Potongan Rp15k)" },
+      2: { kode: "TIKTOKSALSA", potongan: 15000, teks: "Live Selasa Asik! (Potongan Rp15k)" },
+      3: { kode: "TIKTOKRABU",  potongan: 20000, teks: "Live Rabu Heboh! (Potongan Rp20k)" },
+      4: { kode: "TIKTOKKAMIS", potongan: 20000, teks: "Live Kamis Manis! (Potongan Rp20k)" },
+      5: { kode: "LIVEJUMAT",   potongan: 25000, teks: "Live Jumat Agung! (Potongan Rp25k)" },
+      6: { kode: "WEEKENDSERU", potongan: 30000, teks: "Live Sabtu Seru! (Potongan Rp30k)" },
+      0: { kode: "TIKTOKMINGGU",potongan: 30000, teks: "Live Minggu Santai! (Potongan Rp30k)" }
+    };
+
+    // Variabel Penampung State
+    let unitAktif = "kamar";
+    let durasiJam = 4;
+    let voucherDiterapkan = false;
+
+    // Elements DOM
+    const tanggalInput = document.getElementById('tanggal');
+    const jamMasukInput = document.getElementById('jamMasuk');
+    const namaInput = document.getElementById('nama');
+    const inputVoucher = document.getElementById('inputVoucher');
+    const voucherMsg = document.getElementById('voucherMsg');
+    const durasiContainer = document.getElementById('durasiContainer');
+
+    // Set Default Waktu Sekarang ke Form
+    function initWaktuDefault() {
+      const skr = new Date();
+      const yyyy = skr.getFullYear();
+      const mm = String(skr.getMonth() + 1).padStart(2, '0');
+      const dd = String(skr.getDate()).padStart(2, '0');
+      
+      tanggalInput.min = `${yyyy}-${mm}-${dd}`;
+      tanggalInput.value = `${yyyy}-${mm}-${dd}`;
+      
+      const hh = String(skr.getHours()).padStart(2, '0');
+      const min = String(skr.getMinutes()).padStart(2, '0');
+      jamMasukInput.value = `${hh}:${min}`;
+    }
+
+    // Render Pills 4 Sampai 24 Jam Secara Berurutan
+    function renderPillsDurasi() {
+      durasiContainer.innerHTML = "";
+      for (let i = 4; i <= 24; i++) {
+        const pill = document.createElement('div');
+        pill.className = `pill ${i === durasiJam ? 'active' : ''}`;
+        pill.innerText = `${i} Jam`;
+        pill.setAttribute('data-jam', i);
+        
+        pill.onclick = function() {
+          document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          durasiJam = i;
+          updateKalkulasi();
+        };
+        durasiContainer.appendChild(pill);
+      }
+    }
+
+    // Aksi Klik Ganti Unit Kamar/Villa
+    function pilihUnit(key, element) {
+      document.querySelectorAll('.card-option').forEach(c => c.classList.remove('active'));
+      element.classList.add('active');
+      unitAktif = key;
+      updateKalkulasi();
+    }
+
+    // Fungsi Tombol Klaim Voucher
+    function klaimVoucher() {
+      voucherDiterapkan = true;
+      updateKalkulasi();
+    }
+
+    // Penghitungan Utama Logika Bisnis & Output WA
+    function updateKalkulasi() {
+      const tglValue = tanggalInput.value;
+      const jamValue = jamMasukInput.value;
+      if (!tglValue || !jamValue) return;
+
+      // 1. Tentukan Hari (Weekday vs Weekend)
+      const dateObj = new Date(tglValue + 'T00:00:00');
+      const dayIndex = dateObj.getDay(); 
+      const isWeekend = (dayIndex === 0 || dayIndex === 6); // 0=Minggu, 6=Sabtu
+
+      // Update Label Dinamis Pada Grid Unit Atas
+      document.getElementById('harga-kamar-teks').innerText = `Rp${(isWeekend ? TARIF.kamar.weekend : TARIF.kamar.weekday).toLocaleString('id-ID')} / Jam`;
+      document.getElementById('harga-villa2-teks').innerText = `Rp${(isWeekend ? TARIF.villa2.weekend : TARIF.villa2.weekday).toLocaleString('id-ID')} / Jam`;
+      document.getElementById('harga-villa3-teks').innerText = `Rp${(isWeekend ? TARIF.villa3.weekend : TARIF.villa3.weekday).toLocaleString('id-ID')} / Jam`;
+
+      // 2. Ambil Harga Dasar Per Jam Berdasarkan Hari Terpilih
+      const hargaPerJam = isWeekend ? TARIF[unitAktif].weekend : TARIF[unitAktif].weekday;
+      let totalKotor = hargaPerJam * durasiJam;
+      let totalDiskon = 0;
+
+      // 3. BONUS DISKON BAWAN: Jika sewa di atas 8 jam (Diskon Potongan Langsung Rp20.000)
+      if (durasiJam > 8) {
+        totalDiskon += 20000;
+      }
+
+      // 4. CEK VOUCHER HARIAN LIVE TIKTOK (Khusus Sewa >= 12 Jam)
+      const kodeInput = inputVoucher.value.trim().toUpperCase();
+      const voucherHariIni = VOUCHER_HARIAN[dayIndex];
+
+      if (kodeInput !== "") {
+        if (voucherDiterapkan) {
+          if (kodeInput === voucherHariIni.kode) {
+            if (durasiJam >= 12) {
+              totalDiskon += voucherHariIni.potongan;
+              voucherMsg.style.display = "block";
+              voucherMsg.style.color = "#22c55e";
+              voucherMsg.innerText = `Klaim Berhasil: ${voucherHariIni.teks}`;
+            } else {
+              voucherMsg.style.display = "block";
+              voucherMsg.style.color = "#f43f5e";
+              voucherMsg.innerText = "Gagal: Voucher harian ini hanya berlaku untuk sewa 12 jam ke atas.";
+            }
+          } else {
+            voucherMsg.style.display = "block";
+            voucherMsg.style.color = "#f43f5e";
+            voucherMsg.innerText = "Kode voucher salah atau tidak cocok untuk hari tersebut!";
+          }
+        }
+      } else {
+        voucherMsg.style.display = "none";
+        voucherDiterapkan = false;
+      }
+
+      // 5. Kalkulasi Total Akhir Bersih
+      const totalBersih = Math.max(0, totalKotor - totalDiskon);
+
+      // 6. HITUNG OTOMATIS WAKTU CHECK-OUT
+      const [hMasuk, mMasuk] = jamValue.split(':');
+      const checkInDate = new Date(tglValue + 'T' + hMasuk + ':' + mMasuk + ':00');
+      // Tambahkan durasi jam sewa
+      const checkOutDate = new Date(checkInDate.getTime() + (durasiJam * 60 * 60 * 1000));
+      
+      // Format Jam Keluar
+      const jamCO = String(checkOutDate.getHours()).padStart(2, '0');
+      const menitCO = String(checkOutDate.getMinutes()).padStart(2, '0');
+      // Format Tanggal Keluar (Jika melewati tengah malam / ganti hari)
+      const tglCOFormatted = checkOutDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+      
+      const waktuCheckOutTeks = `${jamCO}:${menitCO} WIB (${tglCOFormatted})`;
+
+      // 7. TAMPILKAN KE INTERFACE WEB
+      document.getElementById('textTipe').innerText = TARIF[unitAktif].nama + (isWeekend ? " (Weekend Rate)" : " (Weekday Rate)");
+      document.getElementById('textDurasi').innerText = `${durasiJam} Jam`;
+      document.getElementById('textCheckOut').innerText = waktuCheckOutTeks;
+
+      if (totalDiskon > 0) {
+        document.getElementById('rowDiskon').style.display = 'flex';
+        document.getElementById('textDiskon').innerText = `-Rp${totalDiskon.toLocaleString('id-ID')}`;
+      } else {
+        document.getElementById('rowDiskon').style.display = 'none';
+      }
+      document.getElementById('textTotal').innerText = `Rp${totalBersih.toLocaleString('id-ID')}`;
+
+      // 8. FORMAT DATA TEXT KIRIM KE WA ADMIN
+      const tglMasukFormatted = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+      const namaUser = namaInput.value.trim() || "Pelanggan Web";
+      
+      let infoPotonganText = totalDiskon > 0 ? `\n🎁 Diskon Dipakai: Rp${totalDiskon.toLocaleString('id-ID')}` : '';
+      let voucherTerpakaiText = (kodeInput === voucherHariIni.kode && durasiJam >= 12) ? `\n🎟️ Kode Voucher TikTok: ${kodeInput}` : '';
+
+      const teksWA = `Halo Putra Jaya, saya mau booking instan via Web:
+
+👤 Nama: ${namaUser}
+🏢 Unit: ${TARIF[unitAktif].nama} (${isWeekend ? 'Weekend' : 'Hari Biasa'})
+📅 Tanggal Masuk: ${tglMasukFormatted}
+🕒 Jam Masuk: ${jamValue} WIB
+⏳ Durasi: ${durasiJam} Jam
+🚨 Waktu Check-Out: ${waktuCheckOutTeks}${infoPotonganText}${voucherTerpakaiText}
+
+💰 Total Akhir Biaya: Rp${totalBersih.toLocaleString('id-ID')}`;
+
+      document.getElementById('btnKirimWA').href = `https://wa.me/6285743181607?text=${encodeURIComponent(teksWA)}`;
+    }
+
+    // Daftarkan Trigger Event Real-time Update
+    tanggalInput.addEventListener('change', function() {
+      voucherDiterapkan = false; // Reset voucher status jika hari diganti biar divalidasi ulang
+      updateKalkulasi();
+    });
+    jamMasukInput.addEventListener('input', updateKalkulasi);
+    namaInput.addEventListener('input', updateKalkulasi);
+    inputVoucher.addEventListener('input', function() {
+      voucherDiterapkan = false; // User ngetik baru, status reset sampai tombol apply ditekan
+    });
+
+    // Jalankan Saat Struktur HP Terbuka Sempurna
+    window.onload = function() {
+      initWaktuDefault();
+      renderPillsDurasi();
+      updateKalkulasi();
+    };
+  </script>
+</body>
+</html>
